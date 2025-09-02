@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotoFix Mobile - Industrial Minimalist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme_industrial_1.css">
+    
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            font-family: var(--font-sans) !important;
+            background: var(--background) !important;
+            color: var(--foreground) !important;
+            margin: 0;
+            line-height: 1.6;
+        }
+        
+        /* Glass Card with Entry Animation */
+        .glass-card {
+            background: var(--glass-backdrop, var(--card));
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            animation: slideInFromLeft 800ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+            transform: translateX(-40px);
+        }
+        
+        /* Service Cards with Hover and Stagger Animation */
+        .service-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            animation: fadeInUp 600ms ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .service-card:nth-child(1) { animation-delay: 100ms; }
+        .service-card:nth-child(2) { animation-delay: 200ms; }
+        .service-card:nth-child(3) { animation-delay: 300ms; }
+        .service-card:nth-child(4) { animation-delay: 400ms; }
+        
+        .service-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent);
+        }
+        
+        .service-card:hover i {
+            transform: scale(1.1) rotate(5deg);
+            transition: transform 300ms ease;
+        }
+        
+        /* Enhanced Button Animations */
+        .btn-primary {
+            background: var(--accent);
+            color: var(--accent-foreground);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 500ms ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:active {
+            transform: translateY(-1px);
+            transition: transform 100ms ease;
+        }
+        
+        .btn-emergency {
+            background: var(--destructive);
+            color: var(--destructive-foreground);
+            border: 2px solid var(--destructive);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 250ms ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-emergency:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--destructive);
+        }
+        
+        /* Process Steps with Sequential Animation */
+        .process-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            animation: slideInFromBottom 600ms ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .process-step:nth-child(1) { animation-delay: 200ms; }
+        .process-step:nth-child(2) { animation-delay: 400ms; }
+        .process-step:nth-child(3) { animation-delay: 600ms; }
+        .process-step:nth-child(4) { animation-delay: 800ms; }
+        
+        .process-step::after {
+            content: '';
+            position: absolute;
+            right: -2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2rem;
+            height: 2px;
+            background: var(--border);
+            animation: expandLine 400ms ease-out forwards;
+            animation-delay: calc(var(--delay, 0) + 400ms);
+            transform-origin: left;
+            transform: scaleX(0) translateY(-50%);
+        }
+        
+        .process-step:last-child::after {
+            display: none;
+        }
+        
+        .process-step:nth-child(1)::after { --delay: 200ms; }
+        .process-step:nth-child(2)::after { --delay: 400ms; }
+        .process-step:nth-child(3)::after { --delay: 600ms; }
+        
+        /* Process Step Icon Animation */
+        .process-step .w-16 {
+            transition: all 300ms ease;
+        }
+        
+        .process-step:hover .w-16 {
+            transform: scale(1.1);
+            background: var(--accent);
+            color: var(--accent-foreground);
+        }
+        
+        /* Metric Cards with Counter Animation */
+        .metric-card {
+            text-align: center;
+            padding: 1rem;
+            transition: all 300ms ease;
+            animation: fadeInScale 600ms ease-out forwards;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        
+        .metric-card:nth-child(1) { animation-delay: 100ms; }
+        .metric-card:nth-child(2) { animation-delay: 200ms; }
+        .metric-card:nth-child(3) { animation-delay: 300ms; }
+        .metric-card:nth-child(4) { animation-delay: 400ms; }
+        
+        .metric-card:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+        
+        .metric-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: var(--font-mono);
+            animation: countUp 1200ms ease-out forwards;
+            animation-delay: 500ms;
+        }
+        
+        /* Review Cards with Slide Animation */
+        .review-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin: 0.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 300ms ease;
+            animation: slideInFromRight 600ms ease-out forwards;
+            opacity: 0;
+            transform: translateX(30px);
+        }
+        
+        .review-card:nth-child(1) { animation-delay: 100ms; }
+        .review-card:nth-child(2) { animation-delay: 250ms; }
+        .review-card:nth-child(3) { animation-delay: 400ms; }
+        
+        .review-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent);
+        }
+        
+        /* Navigation Animation */
+        nav {
+            animation: slideDownNav 600ms ease-out forwards;
+        }
+        
+        /* Hero Image Animation */
+        .hero-image {
+            animation: fadeInScale 1000ms ease-out forwards;
+            animation-delay: 400ms;
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        
+        /* Feature Bar Animation */
+        .feature-item {
+            animation: bounceIn 600ms ease-out forwards;
+            opacity: 0;
+            transform: scale(0.5);
+        }
+        
+        .feature-item:nth-child(1) { animation-delay: 200ms; }
+        .feature-item:nth-child(2) { animation-delay: 350ms; }
+        .feature-item:nth-child(3) { animation-delay: 500ms; }
+        
+        /* Floating Animation for Badge */
+        .floating-badge {
+            animation: float 3000ms ease-in-out infinite;
+        }
+        
+        /* Icon Hover Animations */
+        i[data-lucide] {
+            transition: all 250ms ease;
+        }
+        
+        .service-card i[data-lucide]:hover,
+        .metric-card:hover i[data-lucide],
+        .process-step:hover i[data-lucide] {
+            transform: scale(1.1);
+        }
+        
+        /* Keyframe Animations */
+        @keyframes slideInFromLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInFromBottom {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInFromRight {
+            0% {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes expandLine {
+            0% {
+                transform: scaleX(0) translateY(-50%);
+            }
+            100% {
+                transform: scaleX(1) translateY(-50%);
+            }
+        }
+        
+        @keyframes slideDownNav {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        @keyframes countUp {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* Scroll-triggered animations */
+        @media (prefers-reduced-motion: no-preference) {
+            .animate-on-scroll {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: all 600ms ease-out;
+            }
+            
+            .animate-on-scroll.animated {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Reduce motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50" style="background: var(--background); border-bottom: 1px solid var(--border);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="wrench" class="w-8 h-8" style="color: var(--accent);"></i>
+                    <span class="text-xl font-bold">MotoFix Mobile</span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8">
+                    <a href="#services" class="hover:opacity-70">Services</a>
+                    <a href="#about" class="hover:opacity-70">About</a>
+                    <a href="#contact" class="hover:opacity-70">Contact</a>
+                </div>
+                
+                <a href="tel:555-123-4567" class="btn-emergency">
+                    <i data-lucide="phone" class="w-4 h-4 inline mr-2"></i>
+                    Emergency
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center">
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" 
+                 alt="Motorcycle repair" class="w-full h-full object-cover opacity-20">
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
+            <div class="glass-card p-8">
+                <div class="mb-4 inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium" 
+                     style="background: var(--accent); color: var(--accent-foreground);">
+                    <i data-lucide="clock" class="w-4 h-4"></i>
+                    24/7 Available
+                </div>
+                
+                <h1 class="text-4xl md:text-5xl font-bold mb-6">
+                    Mobile Motorcycle<br>
+                    <span style="color: var(--accent);">Repair Service</span>
+                </h1>
+                
+                <p class="text-xl mb-8 opacity-90">
+                    Professional motorcycle repair at your location. We bring the workshop to you with all the tools and expertise needed.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#contact" class="btn-primary text-center">
+                        <i data-lucide="calendar" class="w-5 h-5 inline mr-2"></i>
+                        Book Service
+                    </a>
+                    <a href="tel:555-123-4567" class="btn-primary text-center" style="background: var(--primary);">
+                        <i data-lucide="phone" class="w-5 h-5 inline mr-2"></i>
+                        Call Now
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hidden md:block">
+                <img src="https://images.unsplash.com/photo-1558618047-b0c5d79d5d26?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
+                     alt="Motorcycle" class="rounded-lg shadow-xl hero-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Bar -->
+    <section class="py-8" style="background: var(--muted);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="flex items-center justify-center gap-3 feature-item">
+                    <i data-lucide="map-pin" class="w-8 h-8" style="color: var(--accent);"></i>
+                    <div>
+                        <h3 class="font-semibold">We Come To You</h3>
+                        <p class="text-sm opacity-75">Mobile service anywhere</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-center gap-3 feature-item">
+                    <i data-lucide="zap" class="w-8 h-8" style="color: var(--accent);"></i>
+                    <div>
+                        <h3 class="font-semibold">Emergency Ready</h3>
+                        <p class="text-sm opacity-75">24/7 breakdown service</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-center gap-3 feature-item">
+                    <i data-lucide="shield-check" class="w-8 h-8" style="color: var(--accent);"></i>
+                    <div>
+                        <h3 class="font-semibold">Expert Certified</h3>
+                        <p class="text-sm opacity-75">ASE certified mechanics</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Our Services</h2>
+                <p class="text-xl opacity-75">Complete motorcycle repair and maintenance at your location</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="service-card">
+                    <i data-lucide="settings" class="w-12 h-12 mb-4" style="color: var(--accent);"></i>
+                    <h3 class="font-semibold mb-2">Engine Repair</h3>
+                    <p class="text-sm opacity-75 mb-3">Complete engine diagnostics and repair services</p>
+                    <div class="text-lg font-bold" style="color: var(--accent);">$80-150</div>
+                    <button class="w-full mt-4 py-2 px-4 rounded border-2" 
+                            style="border-color: var(--accent); color: var(--accent);">
+                        Details
+                    </button>
+                </div>
+                
+                <div class="service-card">
+                    <i data-lucide="circle" class="w-12 h-12 mb-4" style="color: var(--accent);"></i>
+                    <h3 class="font-semibold mb-2">Tire Service</h3>
+                    <p class="text-sm opacity-75 mb-3">Tire repair, replacement, and balancing</p>
+                    <div class="text-lg font-bold" style="color: var(--accent);">$60-120</div>
+                    <button class="w-full mt-4 py-2 px-4 rounded border-2" 
+                            style="border-color: var(--accent); color: var(--accent);">
+                        Details
+                    </button>
+                </div>
+                
+                <div class="service-card">
+                    <i data-lucide="zap" class="w-12 h-12 mb-4" style="color: var(--accent);"></i>
+                    <h3 class="font-semibold mb-2">Electrical</h3>
+                    <p class="text-sm opacity-75 mb-3">Battery, charging, and electrical system repair</p>
+                    <div class="text-lg font-bold" style="color: var(--accent);">$40-100</div>
+                    <button class="w-full mt-4 py-2 px-4 rounded border-2" 
+                            style="border-color: var(--accent); color: var(--accent);">
+                        Details
+                    </button>
+                </div>
+                
+                <div class="service-card">
+                    <i data-lucide="search" class="w-12 h-12 mb-4" style="color: var(--accent);"></i>
+                    <h3 class="font-semibold mb-2">Diagnostics</h3>
+                    <p class="text-sm opacity-75 mb-3">Complete system diagnostics and troubleshooting</p>
+                    <div class="text-lg font-bold" style="color: var(--accent);">$30</div>
+                    <button class="w-full mt-4 py-2 px-4 rounded border-2" 
+                            style="border-color: var(--accent); color: var(--accent);">
+                        Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="py-16" style="background: var(--muted);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">How It Works</h2>
+                <p class="text-xl opacity-75">4 simple steps to get your motorcycle fixed</p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+                <div class="process-step">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl" 
+                         style="background: var(--accent);">1</div>
+                    <div>
+                        <h3 class="font-semibold mb-2">📞 Call Us</h3>
+                        <p class="text-sm opacity-75">Describe your issue</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl" 
+                         style="background: var(--accent);">2</div>
+                    <div>
+                        <h3 class="font-semibold mb-2">🔍 Diagnose</h3>
+                        <p class="text-sm opacity-75">We assess the problem</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl" 
+                         style="background: var(--accent);">3</div>
+                    <div>
+                        <h3 class="font-semibold mb-2">🔧 Repair</h3>
+                        <p class="text-sm opacity-75">Fix it on the spot</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl" 
+                         style="background: var(--accent);">4</div>
+                    <div>
+                        <h3 class="font-semibold mb-2">✅ Done</h3>
+                        <p class="text-sm opacity-75">Back on the road</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Trusted by Riders</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div class="metric-card">
+                    <div class="metric-number">500+</div>
+                    <div class="font-semibold">Happy Customers</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-number">15</div>
+                    <div class="font-semibold">Years Experience</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-number">24/7</div>
+                    <div class="font-semibold">Emergency Service</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-number">⭐⭐⭐⭐⭐</div>
+                    <div class="font-semibold">5 Star Rating</div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="review-card">
+                    <div class="mb-2">⭐⭐⭐⭐⭐</div>
+                    <p class="text-sm mb-2">"Best mobile service I've ever used! Fixed my Harley right in my driveway."</p>
+                    <div class="font-semibold text-sm">- John K.</div>
+                </div>
+                
+                <div class="review-card">
+                    <div class="mb-2">⭐⭐⭐⭐⭐</div>
+                    <p class="text-sm mb-2">"Quick, professional, and saved me from a tow truck. Highly recommend!"</p>
+                    <div class="font-semibold text-sm">- Sarah M.</div>
+                </div>
+                
+                <div class="review-card">
+                    <div class="mb-2">⭐⭐⭐⭐⭐</div>
+                    <p class="text-sm mb-2">"Emergency service at midnight - these guys are lifesavers!"</p>
+                    <div class="font-semibold text-sm">- Mike R.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16" style="background: var(--primary); color: var(--primary-foreground);">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold mb-4">Need Emergency Repair?</h2>
+            <p class="text-xl mb-8 opacity-90">Don't let a breakdown ruin your day. We're here to help 24/7.</p>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <a href="tel:555-123-4567" 
+                   class="block py-6 px-8 rounded-lg border-2 border-white text-center hover:bg-white hover:text-black transition-all">
+                    <i data-lucide="phone" class="w-8 h-8 mx-auto mb-2"></i>
+                    <div class="font-bold text-lg">Emergency Call</div>
+                    <div>📞 (555) 123-4567</div>
+                </a>
+                
+                <a href="#contact" 
+                   class="block py-6 px-8 rounded-lg text-center transition-all" 
+                   style="background: var(--accent); color: var(--accent-foreground);">
+                    <i data-lucide="calendar" class="w-8 h-8 mx-auto mb-2"></i>
+                    <div class="font-bold text-lg">Schedule Service</div>
+                    <div>📅 Book Online</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12" style="background: var(--card); border-top: 1px solid var(--border);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="wrench" class="w-6 h-6" style="color: var(--accent);"></i>
+                        <span class="font-bold text-lg">MotoFix Mobile</span>
+                    </div>
+                    <p class="text-sm opacity-75">Professional mobile motorcycle repair service. We come to you!</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2 text-sm opacity-75">
+                        <li>Engine Repair</li>
+                        <li>Tire Service</li>
+                        <li>Electrical Work</li>
+                        <li>Diagnostics</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-sm opacity-75">
+                        <li>📞 (555) 123-4567</li>
+                        <li>📧 info@motofixmobile.com</li>
+                        <li>🗺️ Serving Metro Area</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Hours</h4>
+                    <ul class="space-y-2 text-sm opacity-75">
+                        <li>Emergency: 24/7</li>
+                        <li>Regular: 8AM-6PM</li>
+                        <li>Weekend: 9AM-5PM</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t mt-8 pt-8 text-center text-sm opacity-75" style="border-color: var(--border);">
+                <p>&copy; 2024 MotoFix Mobile. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Scroll-triggered animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe elements for scroll animations
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Enhanced button interactions
+        document.querySelectorAll('.btn-primary, .btn-emergency').forEach(button => {
+            button.addEventListener('mousedown', function() {
+                this.style.transform = 'translateY(-1px) scale(0.98)';
+            });
+            
+            button.addEventListener('mouseup', function() {
+                this.style.transform = '';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+        
+        // Service card tilt effect
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const deltaX = (e.clientX - centerX) / (rect.width / 2);
+                const deltaY = (e.clientY - centerY) / (rect.height / 2);
+                
+                this.style.transform = `translateY(-8px) scale(1.02) rotateY(${deltaX * 5}deg) rotateX(${-deltaY * 5}deg)`;
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+        
+        // Metric counter animation
+        function animateCounter(element, target, duration = 2000) {
+            const start = 0;
+            const increment = target / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                
+                if (element.textContent.includes('+')) {
+                    element.textContent = Math.floor(current) + '+';
+                } else if (element.textContent.includes('⭐')) {
+                    element.textContent = '⭐⭐⭐⭐⭐';
+                } else if (element.textContent.includes('/')) {
+                    element.textContent = '24/7';
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 16);
+        }
+        
+        // Trigger counter animations when metrics come into view
+        const metricsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const numberElement = entry.target.querySelector('.metric-number');
+                    const text = numberElement.textContent;
+                    
+                    if (text.includes('500+')) {
+                        animateCounter(numberElement, 500, 1500);
+                    } else if (text.includes('15')) {
+                        animateCounter(numberElement, 15, 1000);
+                    }
+                    
+                    metricsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        document.querySelectorAll('.metric-card').forEach(card => {
+            metricsObserver.observe(card);
+        });
+        
+        // Parallax effect for hero background
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero-section .absolute.inset-0 img');
+            if (parallax) {
+                parallax.style.transform = `translateY(${scrolled * 0.1}px) scale(1.1)`;
+            }
+        });
+        
+        // Add a subtle mouse-following glow effect
+        document.addEventListener('mousemove', (e) => {
+            const mouseGlow = document.querySelector('.mouse-glow');
+            if (!mouseGlow) {
+                const glow = document.createElement('div');
+                glow.className = 'mouse-glow';
+                glow.style.cssText = `
+                    position: fixed;
+                    width: 300px;
+                    height: 300px;
+                    background: radial-gradient(circle, rgba(255, 136, 0, 0.1) 0%, transparent 70%);
+                    pointer-events: none;
+                    z-index: -1;
+                    transition: all 0.1s ease;
+                    border-radius: 50%;
+                `;
+                document.body.appendChild(glow);
+            }
+            
+            const glow = document.querySelector('.mouse-glow');
+            glow.style.left = (e.clientX - 150) + 'px';
+            glow.style.top = (e.clientY - 150) + 'px';
+        });
+        
+        // Intersection Observer for stagger animations on service cards
+        const serviceObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.animation = `fadeInUp 600ms ease-out forwards`;
+                    }, index * 100);
+                }
+            });
+        }, { threshold: 0.2 });
+        
+        // Add loading animation completion handler
+        window.addEventListener('load', () => {
+            document.body.style.overflow = 'visible';
+            
+            // Trigger any additional load animations
+            setTimeout(() => {
+                document.querySelectorAll('.service-card').forEach((card, index) => {
+                    card.style.animationDelay = `${100 + (index * 100)}ms`;
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+:root {
+  /* Industrial Minimalist Theme - Slate Gray Foundation */
+  --background: oklch(0.9800 0.0050 240);
+  --foreground: oklch(0.1500 0.0150 240);
+  --card: oklch(0.9900 0.0030 240);
+  --card-foreground: oklch(0.1500 0.0150 240);
+  --popover: oklch(0.9900 0.0030 240);
+  --popover-foreground: oklch(0.1500 0.0150 240);
+  
+  /* Primary: Deep Slate Gray */
+  --primary: oklch(0.3500 0.0200 240);
+  --primary-foreground: oklch(0.9800 0.0050 240);
+  
+  /* Secondary: Light Slate */
+  --secondary: oklch(0.8500 0.0100 240);
+  --secondary-foreground: oklch(0.1500 0.0150 240);
+  
+  /* Accent: Tool Orange */
+  --accent: oklch(0.6500 0.1800 45);
+  --accent-foreground: oklch(0.9800 0.0050 240);
+  
+  /* Muted: Medium Slate */
+  --muted: oklch(0.9000 0.0080 240);
+  --muted-foreground: oklch(0.4500 0.0150 240);
+  
+  --destructive: oklch(0.5500 0.2200 15);
+  --destructive-foreground: oklch(0.9800 0.0050 240);
+  
+  --border: oklch(0.8200 0.0120 240);
+  --input: oklch(0.9500 0.0060 240);
+  --ring: oklch(0.3500 0.0200 240);
+  
+  /* Industrial Typography */
+  --font-sans: 'Inter', 'Roboto', system-ui, sans-serif;
+  --font-serif: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  
+  /* Clean Industrial Radius */
+  --radius: 0.375rem;
+  
+  /* Subtle Industrial Shadows */
+  --shadow-2xs: 0 1px 2px 0px hsl(240 15% 15% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(240 15% 15% / 0.08);
+  --shadow-sm: 0 2px 4px 0px hsl(240 15% 15% / 0.06), 0 1px 2px -1px hsl(240 15% 15% / 0.06);
+  --shadow: 0 4px 6px -1px hsl(240 15% 15% / 0.08), 0 2px 4px -1px hsl(240 15% 15% / 0.04);
+  --shadow-md: 0 6px 12px -2px hsl(240 15% 15% / 0.12), 0 3px 7px -3px hsl(240 15% 15% / 0.08);
+  --shadow-lg: 0 10px 15px -3px hsl(240 15% 15% / 0.08), 0 4px 6px -2px hsl(240 15% 15% / 0.04);
+  --shadow-xl: 0 20px 25px -5px hsl(240 15% 15% / 0.08), 0 10px 10px -5px hsl(240 15% 15% / 0.02);
+  --shadow-2xl: 0 25px 50px -12px hsl(240 15% 15% / 0.20);
+  
+  --tracking-normal: -0.015em;
+  --spacing: 0.25rem;
+  
+  /* Calculated radius variations */
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* Industrial-specific custom properties */
+:root {
+  --tool-orange: oklch(0.6500 0.1800 45);
+  --steel-blue: oklch(0.4500 0.0800 220);
+  --workshop-gray: oklch(0.2500 0.0150 240);
+  --precision-white: oklch(0.9800 0.0050 240);
+}
