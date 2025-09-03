@@ -102,7 +102,7 @@ export function Hero() {
                   </div>
                   <h3 className='text-2xl font-bold text-white mb-2 drop-shadow-lg'>Get Service Now</h3>
                   <p className='text-gray-200 text-sm drop-shadow-md'>
-                    Fill out the form below and we'll contact you within 30 minutes
+                    Fill out the form below and we&apos;ll contact you within 30 minutes
                   </p>
                 </div>
 
